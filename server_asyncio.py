@@ -16,7 +16,6 @@ class EchoServer(asyncio.Protocol):
     def data_received(self, data):
         if data is None:
             return;
-        print(type(data))
         self.transport.write(data)
 
 
