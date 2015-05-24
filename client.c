@@ -134,23 +134,34 @@ void* do_connect()
 {
 	char buffer[BUFFER_SIZE];
 
+	ssize_t l = strlen(message);
 	for (int i=0; i<nconn; i++){
 
 		int fd = new_tcp_client(host, port);
 
 		for (int i=0; i<necho; i++) {
-			if (write(fd, message, strlen(message)) < 0) {
-				perror("Send failed");
-				close(fd);
-				continue;
+
+			ssize_t w_i = 0;
+			ssize_t r;
+			while (w_i < l) {
+				if ((r = write(fd, message + w_i , l - w_i)) < 0) {
+					perror("Send failed");
+					close(fd);
+					continue;
+				}
+				w_i += r;
 			}
 
 			memset(buffer, 0, BUFFER_SIZE);
 
-			if (read(fd, buffer, BUFFER_SIZE -1) < 0){
-				perror("recv failed");
-				close(fd);
-				continue;
+			w_i = 0;
+			while (w_i < l) {
+				if ((r = read(fd, buffer + w_i, l - w_i)) < 0){
+					perror("recv failed");
+					close(fd);
+					continue;
+				}
+				w_i += r;
 			}
 
 			if(strcmp(message, buffer) == 0){
