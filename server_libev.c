@@ -147,6 +147,11 @@ void on_read(struct ev_loop *loop, struct ev_io *watcher, int revents)
 		return;
 	}
 
-	send(watcher->fd, buffer, len, 0);
+	ssize_t sent = send(watcher->fd, buffer, len, 0);
+
+	if (sent != len) {
+		perror("send");
+	}
+
 	memset(buffer, 0, BUFFER_SIZE);
 }
