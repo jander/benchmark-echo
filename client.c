@@ -156,7 +156,7 @@ void* do_connect()
 
 			w_i = 0;
 			while (w_i < l) {
-				if ((r = read(fd, buffer + w_i, l - w_i)) < 0){
+				if ((r = read(fd, buffer + w_i, l - w_i)) < 0) {
 					perror("recv failed");
 					close(fd);
 					continue;
