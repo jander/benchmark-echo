@@ -41,6 +41,7 @@ int main (int argc , char *argv[]) {
             break;
         case 'c':
         	nconn = atoi(optarg);
+		break;
         case 't':
             nthread = atoi(optarg);
             break;
